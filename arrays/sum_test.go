@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestSum(t *testing.T) {
 	t.Run("collection of 5 nums", func(t *testing.T) {
@@ -23,5 +26,28 @@ func TestSum(t *testing.T) {
 		if got != want {
 			t.Errorf("got %q want %q given, %v", got, want, numbers)
 		}
+	})
+}
+
+func TestSumAllTails(t *testing.T) {
+	checkSums := func(t testing.TB, got, want []int) {
+		t.Helper()
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %q want %q", got, want)
+		}
+	}
+
+	t.Run("sums of tail slices", func(t *testing.T) {
+		got := SumAllTails([]int{1, 2}, []int{0, 9})
+		want := []int{2, 9}
+
+		checkSums(t, got, want)
+	})
+
+	t.Run("safely sum empty slices", func(t *testing.T) {
+		got := SumAllTails([]int{}, []int{3, 4, 5})
+		want := []int{0, 9}
+
+		checkSums(t, got, want)
 	})
 }
